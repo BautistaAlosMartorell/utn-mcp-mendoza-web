@@ -1,36 +1,70 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 
+/** Fuentes autoalojadas: cero pedidos a terceros, precargadas y con fallback de métricas ajustadas. */
+const serif = localFont({
+  src: [
+    { path: "./fonts/fraunces-latin-opsz-normal.woff2", style: "normal", weight: "100 900" },
+    { path: "./fonts/fraunces-latin-opsz-italic.woff2", style: "italic", weight: "100 900" },
+  ],
+  variable: "--font-serif",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Georgia", "serif"],
+});
+const sans = localFont({
+  src: "./fonts/geist-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-sans",
+  display: "swap",
+  adjustFontFallback: "Arial",
+  fallback: ["system-ui", "sans-serif"],
+});
+const mono = localFont({
+  src: "./fonts/geist-mono-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-mono",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: "Arial",
+  fallback: ["ui-monospace", "Consolas", "monospace"],
+});
+
+const siteOrigin =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+const title = "UTN FRM MCP: tu Campus Virtual, dentro de tu IA";
+const description =
+  "Servidor MCP local e independiente que conecta tu asistente de IA con el Campus Virtual de la UTN Facultad Regional Mendoza, con tu propia cuenta y solo lectura por defecto.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://utnmcp.com.ar"),
-  title: {
-    default: "UTN FRM MCP — El Campus, en contexto",
-    template: "%s | UTN FRM MCP",
-  },
-  description:
-    "Proyecto independiente que conecta el Campus Virtual UTN FRM con clientes de IA compatibles mediante un servidor MCP local.",
+  metadataBase: new URL(siteOrigin),
+  title: { default: title, template: "%s | UTN FRM MCP" },
+  description,
   applicationName: "UTN FRM MCP",
-  openGraph: {
-    type: "website",
-    locale: "es_AR",
-    siteName: "UTN FRM MCP",
-    title: "UTN FRM MCP — El Campus, en contexto",
-    description:
-      "Un puente local entre el Campus Virtual de UTN Mendoza y clientes de IA compatibles. Conocé su alcance y límites actuales.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "UTN FRM MCP — El Campus, en contexto",
-    description:
-      "Un servidor MCP local para consultar el Campus Virtual de UTN Mendoza.",
-  },
-  icons: { icon: "/icon.svg", shortcut: "/icon.svg" },
+  keywords: ["UTN FRM", "Campus Virtual", "MCP", "Model Context Protocol", "Mendoza", "asistente de IA"],
+  alternates: { canonical: "/" },
+  manifest: "/manifest.webmanifest",
+  openGraph: { type: "website", locale: "es_AR", siteName: "UTN FRM MCP", title, description },
+  twitter: { card: "summary_large_image", title, description },
+  formatDetection: { telephone: false, email: false, address: false },
+  referrer: "strict-origin-when-cross-origin",
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#12060e",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-AR">
+    <html lang="es-AR" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );
