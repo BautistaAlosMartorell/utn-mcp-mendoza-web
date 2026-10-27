@@ -400,7 +400,7 @@ em { font-style: italic; }
 .dsec > p { margin-bottom: 26px; max-width: 40em; color: var(--ink-2); }
 .dsec .steps { margin-top: 32px; }
 .tool-list { display: grid; border-top: 1px solid var(--line); }
-.tool { display: grid; grid-template-columns: 110px 230px minmax(0, 1fr); align-items: center; gap: 6px 22px; padding: 14px 4px; border-bottom: 1px solid var(--line); transition: background 0.2s; }
+.tool { display: grid; grid-template-columns: 120px 250px minmax(0, 1fr); align-items: center; gap: 6px 22px; padding: 14px 4px; border-bottom: 1px solid var(--line); transition: background 0.2s; }
 .tool:hover { background: rgba(138, 36, 85, 0.05); }
 .tool-access { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; }
 .tool-lectura .tool-access { color: var(--malbec); }
@@ -601,3 +601,10 @@ html { -webkit-tap-highlight-color: rgba(242, 180, 65, 0.25); }
 .ftr-cols { flex-wrap: wrap; row-gap: 32px; }
 .hdr-nav a[target] { color: var(--sol); }
 .m-menu nav a[target] { color: var(--sol); }
+
+/* Herramientas agrupadas por área, accesos "con permiso" y "en tu equipo", subtítulos de la guía */
+.tool-permiso .tool-access { color: var(--warn); }
+.tool-local .tool-access { color: var(--mute); }
+.tool-group { margin-top: 36px; }
+.tool-group h3, .sub-h { margin-bottom: 12px; font-family: var(--mono); font-size: 12.5px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--malbec); }
+.sub-h { margin-top: 44px; }

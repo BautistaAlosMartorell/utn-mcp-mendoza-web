@@ -8,8 +8,9 @@ import { Terrain } from "@/components/terrain";
 import { IconArrow } from "@/components/icons";
 import { faqs, product, tools } from "@/lib/content";
 
-const readTools = tools.filter((t) => t.access === "lectura");
-const previewTools = tools.filter((t) => t.access === "preview");
+const readTools = tools.filter((t) => t.access === "lectura" || t.access === "local");
+const gatedTools = tools.filter((t) => t.access === "permiso" || t.access === "preview");
+const count = (a: string) => tools.filter((t) => t.access === a).length;
 
 const principles = [
   {
@@ -19,13 +20,13 @@ const principles = [
   },
   {
     k: "Sesión",
-    t: "Tu sesión, no tu contraseña.",
-    d: "Iniciás sesión una vez, en la página oficial del Campus. Se guarda la sesión, cifrada en Windows con DPAPI.",
+    t: "Tu contraseña, en el Campus.",
+    d: "Iniciás sesión en la página del Campus. Si querés Autogestión y correo, podés guardar usuario y contraseña cifrados con el almacén del sistema, y borrarlos cuando quieras.",
   },
   {
     k: "Lectura",
-    t: "Mira, no toca.",
-    d: "Consulta lo que tu cuenta ya puede ver. Esta beta es de solo lectura: publicar, votar, crear eventos y entregar están deshabilitados.",
+    t: "Mira, casi nunca toca.",
+    d: "En el Campus y en Autogestión es solo lectura. Lo único que puede cambiar es tu correo, moviendo a la Papelera o marcando como leído, y te pide permiso cada vez.",
   },
   {
     k: "Ritmo",
@@ -34,12 +35,12 @@ const principles = [
   },
 ];
 
-const never = ["Entregar tus trabajos", "Publicar en los foros", "Votar por vos", "Guardar tu contraseña"];
+const never = ["Entregar tus trabajos", "Publicar en los foros", "Enviar mails por vos", "Borrar nada para siempre"];
 
 const route = [
   { n: "01", k: "Salida", t: "Le preguntás a tu asistente", d: "Con tus palabras, en el cliente de IA que ya usás." },
-  { n: "02", k: "Refugio", t: "UTN FRM MCP elige la herramienta", d: "Materias, consignas, archivos, notas, foros o calendario, según lo que pediste." },
-  { n: "03", k: "Cumbre", t: "El Campus responde", d: "Con tu sesión, en tu computadora. Vuelve solo lo necesario para contestarte." },
+  { n: "02", k: "Refugio", t: "UTN FRM MCP elige la herramienta", d: "Materias, consignas, archivos, notas, exámenes, correlatividades o mails, según lo que pediste." },
+  { n: "03", k: "Cumbre", t: "La facultad responde", d: "El Campus, Autogestión o tu correo, con tu cuenta y en tu computadora. Vuelve solo lo necesario para contestarte." },
 ];
 
 const index = [
@@ -57,8 +58,8 @@ const index = [
   },
   {
     n: "02",
-    t: "Lee tu material de cursada.",
-    d: "Extrae el texto de los archivos de la materia para que puedas resumir, estudiar y consultar sin abrir uno por uno.",
+    t: "Estudiá con tu material.",
+    d: "Lee los archivos de la materia, incluso las tablas de los PDF, y arma resúmenes por unidad, preguntas de práctica, tarjetas y un plan de estudio, con las páginas de origen.",
     vis: (
       <div className="spec spec-files">
         {["PDF", "DOCX", "PPTX", "XLSX", "ODT", "RTF", "EPUB"].map((f, i) => (
@@ -69,8 +70,8 @@ const index = [
   },
   {
     n: "03",
-    t: "Tus notas, sin ir a buscarlas.",
-    d: "Calificaciones por materia y lo que te falta para cerrar la cursada.",
+    t: "Tu carrera, sin ir a buscarla.",
+    d: "Notas del Campus y, desde Autogestión, tus exámenes, el plan, los horarios, el estado académico y las correlatividades: qué te falta para recibirte y qué conviene rendir primero.",
     vis: (
       <div className="spec spec-bars">
         {[58, 82, 70, 92, 46].map((v, i) => (
@@ -87,6 +88,17 @@ const index = [
       <div className="spec spec-thread">
         <span>¿Hasta qué tema entra en el parcial?</span>
         <span>Hasta ley de Gauss inclusive.</span>
+      </div>
+    ),
+  },
+  {
+    n: "05",
+    t: "Tu correo de la facultad, al día.",
+    d: "Lista, lee y busca mensajes por remitente, asunto o fecha sin marcarlos como leídos. Mover a la Papelera o marcar como leído lo hace solo con tu permiso.",
+    vis: (
+      <div className="spec spec-thread">
+        <span>¿Mails sin leer de la facultad?</span>
+        <span>Tenés 2. No los marqué como leídos.</span>
       </div>
     ),
   },
@@ -108,12 +120,13 @@ export default function Home() {
                 Para estudiantes de la UTN FRM · Mendoza
               </p>
               <h1>
-                <span className="ln"><span>Tu Campus Virtual,</span></span>
+                <span className="ln"><span>Tu facultad,</span></span>
                 <span className="ln"><span><em>dentro de tu IA.</em></span></span>
               </h1>
               <p className="lead">
-                Preguntale a tu asistente por tus entregas, apuntes y notas. UTN FRM MCP lee el Campus con tu propia
-                cuenta, en tu computadora, y le da a la IA el contexto para ayudarte de verdad.
+                Preguntale a tu asistente por tus entregas, apuntes, exámenes y mails. UTN FRM MCP lee el Campus
+                Virtual, Autogestión y tu correo institucional con tu propia cuenta, en tu computadora, y le da a la IA
+                el contexto para ayudarte de verdad.
               </p>
               <div className="cta-row">
                 <Link href="/#empezar" className="btn btn-sol">
@@ -123,7 +136,7 @@ export default function Home() {
               </div>
               <a className="release" href={product.release} target="_blank" rel="noreferrer">
                 <b>v{product.version}</b>
-                <span>{product.channel} · para {product.platform}</span>
+                <span>{product.channel} · {product.platforms}</span>
                 <i aria-hidden="true">↗</i>
               </a>
             </div>
@@ -135,8 +148,8 @@ export default function Home() {
           <div className="wrap hero-foot">
             <p className="coords">32°53′ S · 68°50′ O<span>Mendoza, Argentina</span></p>
             <p className="works">
-              <span>Probado con</span>
-              Codex  ·  MCP por STDIO  ·  Código abierto (MIT)
+              <span>Funciona con</span>
+              Codex  ·  Claude Code  ·  OpenCode  ·  Claude Desktop
             </p>
             <a href="#que-hace" className="cue" aria-label="Seguir bajando">
               <i aria-hidden="true" />
@@ -153,8 +166,8 @@ export default function Home() {
                 Preguntale lo que antes tenías que <em>ir a buscar.</em>
               </h2>
               <p>
-                El Campus guarda todo, pero encontrarlo lleva clics. Con UTN FRM MCP tu asistente entra por vos, lee y
-                te responde en lenguaje natural.
+                El Campus, Autogestión y el correo guardan todo, pero encontrarlo lleva clics. Con UTN FRM MCP tu
+                asistente entra por vos, lee y te responde en lenguaje natural.
               </p>
             </Reveal>
 
@@ -176,8 +189,9 @@ export default function Home() {
             <div className="wrap tools-head">
               <p className="big-num">{tools.length}</p>
               <p>
-                herramientas. <b>{readTools.length}</b> consultan el Campus y <b>{previewTools.length}</b> solo
-                muestran una vista previa de lo que pasaría.
+                herramientas. <b>{readTools.length}</b> consultan o preparan datos en tu equipo, <b>{count("permiso")}</b>{" "}
+                cambian tu correo solo con tu permiso y <b>{count("preview")}</b> muestran una vista previa de lo que
+                pasaría en el Campus.
               </p>
               <Link href="/docs#alcance" className="link">Ver qué hace cada una <IconArrow /></Link>
             </div>
@@ -188,8 +202,8 @@ export default function Home() {
                 ))}
               </div>
               <div className="mq mq-b">
-                {[...previewTools, ...previewTools, ...previewTools, ...previewTools].map((t, i) => (
-                  <span key={`${t.name}-${i}`} className={i >= previewTools.length ? "is-preview dup" : "is-preview"}>{t.name}</span>
+                {[...gatedTools, ...gatedTools, ...gatedTools].map((t, i) => (
+                  <span key={`${t.name}-${i}`} className={i >= gatedTools.length ? "is-preview dup" : "is-preview"}>{t.name}</span>
                 ))}
               </div>
             </div>
@@ -207,7 +221,7 @@ export default function Home() {
               </h2>
               <p>
                 UTN FRM MCP es un servidor MCP, el estándar abierto con el que los asistentes usan herramientas. Tu
-                asistente lo llama; él consulta el Campus por vos.
+                asistente lo llama; él consulta el Campus, Autogestión o tu correo por vos.
               </p>
             </Reveal>
 
@@ -244,7 +258,7 @@ export default function Home() {
               </h2>
               <p>
                 Pensado para que puedas dejarlo conectado con tranquilidad: todo ocurre en tu equipo y nada cambia en el
-                Campus sin que lo hagas vos.
+                Campus ni en Autogestión sin que lo hagas vos.
               </p>
             </Reveal>
 
@@ -278,8 +292,8 @@ export default function Home() {
                 Listo en <em>cuatro pasos.</em>
               </h2>
               <p>
-                Instalá el paquete, iniciá sesión una vez, conectalo a tu asistente y empezá a preguntar. Hoy está
-                disponible para {product.platform}.
+                Instalá el paquete, conectá tu cuenta, enlazalo con tu asistente y empezá a preguntar. Disponible para{" "}
+                {product.platforms}.
               </p>
             </Reveal>
             <Install />
@@ -312,7 +326,7 @@ export default function Home() {
           <div className="final-shade" aria-hidden="true" />
           <div className="wrap final-in">
             <h2 id="h-final">
-              Que tu Campus <em>trabaje para vos.</em>
+              Que tu facultad <em>trabaje para vos.</em>
             </h2>
             <p>Conectá tu asistente en minutos y empezá a preguntar.</p>
             <div className="cta-row cta-center">

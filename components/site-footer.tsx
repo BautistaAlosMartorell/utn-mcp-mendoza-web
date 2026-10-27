@@ -11,7 +11,7 @@ export function SiteFooter() {
             <LogoMark size={26} />
             <span>UTN FRM <i>MCP</i></span>
           </Link>
-          <p>El Campus Virtual de la UTN Facultad Regional Mendoza, dentro de tu asistente de IA.</p>
+          <p>El Campus, Autogestión y el correo de la UTN Facultad Regional Mendoza, dentro de tu asistente de IA.</p>
         </div>
         <nav className="ftr-cols" aria-label="Pie">
           <div>

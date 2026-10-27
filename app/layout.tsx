@@ -35,16 +35,16 @@ const siteOrigin =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-const title = "UTN FRM MCP: tu Campus Virtual, dentro de tu IA";
+const title = "UTN FRM MCP: tu facultad, dentro de tu IA";
 const description =
-  "Servidor MCP local e independiente que conecta tu asistente de IA con el Campus Virtual de la UTN Facultad Regional Mendoza, con tu propia cuenta y solo lectura por defecto.";
+  "Servidor MCP local e independiente que conecta tu asistente de IA con el Campus Virtual, Autogestión y el correo de la UTN Facultad Regional Mendoza, con tu propia cuenta. Solo lectura en el Campus y en Autogestión.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin),
   title: { default: title, template: "%s | UTN FRM MCP" },
   description,
   applicationName: "UTN FRM MCP",
-  keywords: ["UTN FRM", "Campus Virtual", "MCP", "Model Context Protocol", "Mendoza", "asistente de IA"],
+  keywords: ["UTN FRM", "Campus Virtual", "Autogestión", "Sysacad", "MCP", "Model Context Protocol", "Mendoza", "asistente de IA"],
   alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
   openGraph: { type: "website", locale: "es_AR", siteName: "UTN FRM MCP", title, description },

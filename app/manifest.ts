@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "UTN FRM MCP",
     short_name: "UTN FRM MCP",
-    description: "Tu Campus Virtual de la UTN FRM, dentro de tu asistente de IA.",
+    description: "Tu facultad de la UTN FRM, dentro de tu asistente de IA.",
     lang: "es-AR",
     start_url: "/",
     scope: "/",

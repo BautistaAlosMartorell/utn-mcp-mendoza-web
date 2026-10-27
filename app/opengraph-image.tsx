@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "UTN FRM MCP: tu Campus Virtual, dentro de tu IA";
+export const alt = "UTN FRM MCP: tu facultad, dentro de tu IA";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -47,7 +47,7 @@ export default function OpenGraphImage() {
         UTN FRM MCP
       </div>
       <div style={{ display: "flex", flexDirection: "column", fontSize: 108, fontWeight: 700, lineHeight: 0.98, letterSpacing: -4 }}>
-        <div style={{ display: "flex" }}>Tu Campus Virtual,</div>
+        <div style={{ display: "flex" }}>Tu facultad,</div>
         <div style={{ display: "flex", color: "#f2b441" }}>dentro de tu IA.</div>
       </div>
       <div style={{ display: "flex", fontSize: 24, color: "#b9a9ae", letterSpacing: 3 }}>

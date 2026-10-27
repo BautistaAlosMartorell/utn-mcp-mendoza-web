@@ -65,22 +65,37 @@ const scenes: Scene[] = [
     ),
   },
   {
-    id: "notas",
-    tab: "Notas",
-    prompt: "¿Cómo voy en Sistemas de Datos?",
-    tools: ["list_courses", "get_grades"],
+    id: "carrera",
+    tab: "Carrera",
+    prompt: "¿Qué me falta para recibirme y qué conviene rendir primero?",
+    tools: ["sysacad_consultar", "sysacad_inscripcion_estado"],
     answer: (
       <>
-        <p className="ans-lead">Esto es lo que figura en tu calificador:</p>
+        <p className="ans-lead">Según tu plan y tu estado académico:</p>
         <table className="grades">
           <tbody>
-            <tr><td>Parcial 1</td><td><b>7,50</b></td></tr>
-            <tr><td>Trabajo Práctico 1</td><td><span className="pill pill-ok">Aprobado</span></td></tr>
-            <tr><td>Trabajo Práctico 2</td><td><span className="pill pill-ok">Aprobado</span></td></tr>
-            <tr><td>Trabajo Práctico 3</td><td><span className="pill pill-warn">Pendiente</span></td></tr>
+            <tr><td>Final de Redes</td><td><span className="pill pill-ok">Podés rendir</span></td></tr>
+            <tr><td>Final de Gestión</td><td><span className="pill pill-warn">Falta correlativa</span></td></tr>
+            <tr><td>Electivas</td><td><span className="pill pill-warn">Faltan horas</span></td></tr>
           </tbody>
         </table>
-        <p className="ans-foot">Te falta el TP 3 y el Parcial 2.</p>
+        <p className="ans-foot">Conviene rendir Redes primero: habilita lo que sigue.</p>
+      </>
+    ),
+  },
+  {
+    id: "correo",
+    tab: "Correo",
+    prompt: "¿Tengo mails sin leer de la facultad?",
+    tools: ["mail_search", "mail_read_message"],
+    answer: (
+      <>
+        <p className="ans-lead">Tenés <b>2 mails sin leer</b>:</p>
+        <ul className="bul">
+          <li><b>Cátedra de Física II</b> · Cambio de aula para el parcial.</li>
+          <li><b>Alumnado</b> · Plazo para el certificado de alumno regular.</li>
+        </ul>
+        <p className="ans-foot">No los marqué como leídos. ¿Querés que lo haga o que los mande a la Papelera?</p>
       </>
     ),
   },
@@ -203,7 +218,7 @@ export function HeroDemo() {
         </div>
 
         <div className="win-input" aria-hidden="true">
-          <span>Preguntale algo a tu Campus…</span>
+          <span>Preguntale algo a tu facultad…</span>
           <i>↑</i>
         </div>
       </div>
