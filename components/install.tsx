@@ -133,13 +133,12 @@ export function Install() {
         <div className="step-body">
           <h3>Instalá el paquete</h3>
           <p>
-            Necesitás Node.js {product.node} o posterior y un cliente de IA con MCP ya instalado. En la{" "}
+            Necesitás Node.js {product.node} o posterior y un cliente de IA con MCP ya instalado. Desde la{" "}
             <a className="inline" href={product.release} target="_blank" rel="noreferrer">
               página de releases
-            </a>
-            , sección <em>Assets</em> de la versión {product.version}, bajá <code>{product.pkgName}</code> y su{" "}
-            <code>.sha256</code> y guardalos juntos en una carpeta <code>utn-mcp-beta</code> dentro de Descargas. No
-            hace falta clonar nada ni bajar el <em>Source code</em>.
+            </a>{" "}
+            (sección <em>Assets</em>, versión {product.version}) bajá el instalador y su <code>.sha256</code>, y
+            guardalos juntos en una carpeta <code>utn-mcp-beta</code> dentro de Descargas. No hace falta clonar nada.
           </p>
 
           <Tabs

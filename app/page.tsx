@@ -189,8 +189,8 @@ export default function Home() {
             <div className="wrap tools-head">
               <p className="big-num">{tools.length}</p>
               <p>
-                herramientas. <b>{readTools.length}</b> consultan o preparan datos en tu equipo, <b>{count("permiso")}</b>{" "}
-                cambian tu correo solo con tu permiso y <b>{count("preview")}</b> muestran una vista previa de lo que
+                herramientas. <b>{readTools.length}</b> leen información o actúan solo en tu equipo, <b>{count("permiso")}</b>{" "}
+                tocan tu correo únicamente con tu permiso y <b>{count("preview")}</b> muestran una vista previa de lo que
                 pasaría en el Campus.
               </p>
               <Link href="/docs#alcance" className="link">Ver qué hace cada una <IconArrow /></Link>
