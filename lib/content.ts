@@ -18,6 +18,8 @@ export const product = {
   repo,
   /** Página de releases: de ahí se bajan el instalador y su .sha256. */
   release: `${repo}/releases`,
+  // shortcut: #main se mueve con cada push (el tag v2.1.0 quedó antes del fix de Windows): fijar acá el tag nuevo cuando el dueño lo publique.
+  gitSpec: "github:BautistaAlosMartorell/utnfrm-mcp#main",
   pkgName: `utn-mcp-mendoza-${version}.tgz`,
   mcpbName: `utn-mcp-mendoza-${version}.mcpb`,
   issues: `${repo}/issues`,
@@ -116,6 +118,8 @@ export interface OsDef {
   shell: string;
   /** Prerrequisito del sistema, si lo hay. */
   before?: string;
+  /** Instalación con npm directo desde GitHub. */
+  npm: string;
   install: string;
   verify: string;
   note?: string;
@@ -123,12 +127,24 @@ export interface OsDef {
 
 const dir = "utn-mcp-beta";
 
+/** npm 12 bloquea las dependencias git por defecto (EALLOWGIT): el flag las habilita solo para este comando. */
+const npmGit = `npm install --global --allow-git=all ${product.gitSpec}`;
+const browser = `${product.cli} install-browser`;
+const linuxDeps = ["sudo apt-get update", "sudo apt-get install -y libsecret-tools gnome-keyring"];
+
+export const installMethods = [
+  { id: "npm", label: "Con npm" },
+  { id: "tgz", label: "Instalador .tgz" },
+] as const;
+export type MethodId = (typeof installMethods)[number]["id"];
+
 /** Paso 1: descarga manual de la release, tal como figura en el README. */
 export const installByOs: OsDef[] = [
   {
     id: "windows",
     label: "Windows",
     shell: "PowerShell",
+    npm: [npmGit, browser].join("\n"),
     install: [
       `cd "$HOME\\Downloads\\${dir}"`,
       `npm install --global .\\${product.pkgName}`,
@@ -146,10 +162,10 @@ export const installByOs: OsDef[] = [
     shell: "Terminal",
     before:
       "Necesita el almacén seguro de contraseñas (Secret Service) de una sesión de escritorio normal, desbloqueado. No funciona de forma segura por SSH, sin pantalla ni en WSL. El bloque es para Ubuntu o Debian; en otras distribuciones instalá el equivalente.",
+    npm: [...linuxDeps, npmGit, browser].join("\n"),
     install: [
       `cd ~/Downloads/${dir}`,
-      "sudo apt-get update",
-      "sudo apt-get install -y libsecret-tools gnome-keyring",
+      ...linuxDeps,
       `npm install --global ./${product.pkgName}`,
       `${product.cli} install-browser`,
     ].join("\n"),
@@ -160,6 +176,7 @@ export const installByOs: OsDef[] = [
     label: "macOS",
     shell: "Terminal",
     note: "Cuando macOS pregunte, permití que UTN FRM MCP use el Llavero de inicio de sesión.",
+    npm: [npmGit, browser].join("\n"),
     install: [
       `cd ~/Downloads/${dir}`,
       `npm install --global ./${product.pkgName}`,

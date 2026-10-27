@@ -4,11 +4,13 @@ import { useId, useRef, useState } from "react";
 import {
   clients,
   installByOs,
+  installMethods,
   loginCommands,
   product,
   prompts,
   wizardCommand,
   type ClientId,
+  type MethodId,
   type OsId,
 } from "@/lib/content";
 
@@ -119,10 +121,12 @@ function Tabs<T extends string>({
 
 export function Install() {
   const uid = useId();
+  const [method, setMethod] = useState<MethodId>("npm");
   const [osId, setOsId] = useState<OsId>("windows");
   const [clientId, setClientId] = useState<ClientId>("codex");
   const os = installByOs.find((o) => o.id === osId)!;
   const client = clients.find((c) => c.id === clientId)!;
+  const methodPanel = `${uid}-method-panel`;
   const osPanel = `${uid}-os-panel`;
   const clientPanel = `${uid}-client-panel`;
 
@@ -132,33 +136,62 @@ export function Install() {
         <div className="step-n" aria-hidden="true">1</div>
         <div className="step-body">
           <h3>Instalá el paquete</h3>
-          <p>
-            Necesitás Node.js {product.node} o posterior y un cliente de IA con MCP ya instalado. Desde la{" "}
-            <a className="inline" href={product.release} target="_blank" rel="noreferrer">
-              página de releases
-            </a>{" "}
-            (sección <em>Assets</em>, versión {product.version}) bajá el instalador y su <code>.sha256</code>, y
-            guardalos juntos en una carpeta <code>utn-mcp-beta</code> dentro de Descargas. No hace falta clonar nada.
-          </p>
-
           <Tabs
-            label="Sistema operativo"
-            items={installByOs}
-            value={osId}
-            onChange={setOsId}
-            panelId={osPanel}
-            uid={`${uid}-os`}
+            label="Cómo instalarlo"
+            items={[...installMethods]}
+            value={method}
+            onChange={setMethod}
+            panelId={methodPanel}
+            uid={`${uid}-method`}
           />
 
-          <div role="tabpanel" id={osPanel} aria-labelledby={`${uid}-os-tab-${osId}`}>
-            {os.before && <p className="warn-note">{os.before}</p>}
-            <Code label={os.shell} text={os.install} prompt />
-            {os.note && <p className="note">{os.note}</p>}
-            <details className="verify">
-              <summary>Verificar el instalador (recomendado)</summary>
-              <p>Corré esto antes de instalar, en la misma carpeta. Tiene que decir que está bien; si no, volvé a descargarlo.</p>
-              <Code label={os.shell} text={os.verify} />
-            </details>
+          <div role="tabpanel" id={methodPanel} aria-labelledby={`${uid}-method-tab-${method}`}>
+            {method === "npm" ? (
+              <p>
+                Necesitás Node.js {product.node} o posterior, <code>git</code> y un cliente de IA con MCP ya
+                instalado. npm baja el código actual de{" "}
+                <a className="inline" href={product.repo} target="_blank" rel="noreferrer">GitHub</a> y lo instala:
+                no hay que descargar nada.
+              </p>
+            ) : (
+              <p>
+                Necesitás Node.js {product.node} o posterior y un cliente de IA con MCP ya instalado. Desde la{" "}
+                <a className="inline" href={product.release} target="_blank" rel="noreferrer">
+                  página de releases
+                </a>{" "}
+                (sección <em>Assets</em>, versión {product.version}) bajá el instalador y su <code>.sha256</code>, y
+                guardalos juntos en una carpeta <code>utn-mcp-beta</code> dentro de Descargas. Si esa versión todavía
+                no tiene el instalador publicado, usá la opción con npm.
+              </p>
+            )}
+
+            <Tabs
+              label="Sistema operativo"
+              items={installByOs}
+              value={osId}
+              onChange={setOsId}
+              panelId={osPanel}
+              uid={`${uid}-os`}
+            />
+
+            <div role="tabpanel" id={osPanel} aria-labelledby={`${uid}-os-tab-${osId}`}>
+              {os.before && <p className="warn-note">{os.before}</p>}
+              <Code label={os.shell} text={method === "npm" ? os.npm : os.install} prompt />
+              {os.note && <p className="note">{os.note}</p>}
+              {method === "npm" ? (
+                <p className="note">
+                  <code>--allow-git=all</code> es necesario porque npm 12 bloquea por defecto las instalaciones desde
+                  git (<code>EALLOWGIT</code>); el flag solo vale para ese comando. Usá npm: pnpm también las bloquea y
+                  pide permisos extra por cada versión. Esta vía no verifica un SHA-256.
+                </p>
+              ) : (
+                <details className="verify">
+                  <summary>Verificar el instalador (recomendado)</summary>
+                  <p>Corré esto antes de instalar, en la misma carpeta. Tiene que decir que está bien; si no, volvé a descargarlo.</p>
+                  <Code label={os.shell} text={os.verify} />
+                </details>
+              )}
+            </div>
           </div>
         </div>
       </li>
