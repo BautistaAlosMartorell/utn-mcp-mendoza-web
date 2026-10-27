@@ -38,7 +38,7 @@ const scenes: Scene[] = [
           </li>
           <li>
             <span className="due-date"><b>02</b>NOV</span>
-            <span className="due-main"><b>Guía 5</b><i>Sistemas de Datos</i></span>
+            <span className="due-main"><b>Guía 5</b><i>Sistemas Operativos</i></span>
             <span className="pill pill-ok">Entregado</span>
           </li>
         </ul>
