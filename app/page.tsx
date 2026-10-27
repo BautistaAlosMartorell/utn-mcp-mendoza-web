@@ -21,12 +21,12 @@ const principles = [
   {
     k: "Sesión",
     t: "Tu contraseña, en el Campus.",
-    d: "Iniciás sesión en la página del Campus. Si querés Autogestión y correo, podés guardar usuario y contraseña cifrados con el almacén del sistema, y borrarlos cuando quieras.",
+    d: "Iniciás sesión en la página del Campus, no en el asistente. Guardar usuario y contraseña para Autogestión y correo es opcional, y los borrás cuando quieras.",
   },
   {
     k: "Lectura",
     t: "Mira, casi nunca toca.",
-    d: "En el Campus y en Autogestión es solo lectura. Lo único que puede cambiar es tu correo, moviendo a la Papelera o marcando como leído, y te pide permiso cada vez.",
+    d: "Campus y Autogestión son solo lectura. En el correo solo mueve a la Papelera o marca como leído, y te pide permiso cada vez.",
   },
   {
     k: "Ritmo",
@@ -40,7 +40,7 @@ const never = ["Entregar tus trabajos", "Publicar en los foros", "Enviar mails p
 const route = [
   { n: "01", k: "Salida", t: "Le preguntás a tu asistente", d: "Con tus palabras, en el cliente de IA que ya usás." },
   { n: "02", k: "Refugio", t: "UTN FRM MCP elige la herramienta", d: "Materias, consignas, archivos, notas, exámenes, correlatividades o mails, según lo que pediste." },
-  { n: "03", k: "Cumbre", t: "La facultad responde", d: "El Campus, Autogestión o tu correo, con tu cuenta y en tu computadora. Vuelve solo lo necesario para contestarte." },
+  { n: "03", k: "Cumbre", t: "La facultad responde", d: "El Campus, Autogestión o tu correo, con tu cuenta. Vuelve solo lo necesario para contestarte." },
 ];
 
 const index = [
@@ -83,7 +83,7 @@ const index = [
   {
     n: "04",
     t: "Foros, gente y calendario.",
-    d: "Qué respondió el docente, quién cursa con vos y qué eventos vienen. Todo lo que tu cuenta ya puede ver.",
+    d: "Qué respondió el docente, quién cursa con vos y qué eventos vienen.",
     vis: (
       <div className="spec spec-thread">
         <span>¿Hasta qué tema entra en el parcial?</span>
@@ -94,7 +94,7 @@ const index = [
   {
     n: "05",
     t: "Tu correo de la facultad, al día.",
-    d: "Lista, lee y busca mensajes por remitente, asunto o fecha sin marcarlos como leídos. Mover a la Papelera o marcar como leído lo hace solo con tu permiso.",
+    d: "Lista, lee y busca mensajes por remitente, asunto o fecha sin marcarlos como leídos.",
     vis: (
       <div className="spec spec-thread">
         <span>¿Mails sin leer de la facultad?</span>
@@ -125,8 +125,7 @@ export default function Home() {
               </h1>
               <p className="lead">
                 Preguntale a tu asistente por tus entregas, apuntes, exámenes y mails. UTN FRM MCP lee el Campus
-                Virtual, Autogestión y tu correo institucional con tu propia cuenta, en tu computadora, y le da a la IA
-                el contexto para ayudarte de verdad.
+                Virtual, Autogestión y tu correo institucional con tu propia cuenta, en tu computadora.
               </p>
               <div className="cta-row">
                 <Link href="/#empezar" className="btn btn-sol">
@@ -165,10 +164,6 @@ export default function Home() {
               <h2 id="h-que">
                 Preguntale lo que antes tenías que <em>ir a buscar.</em>
               </h2>
-              <p>
-                El Campus, Autogestión y el correo guardan todo, pero encontrarlo lleva clics. Con UTN FRM MCP tu
-                asistente entra por vos, lee y te responde en lenguaje natural.
-              </p>
             </Reveal>
 
             <ol className="index">
@@ -220,8 +215,7 @@ export default function Home() {
                 Un puente local entre tu IA y <em>el Campus.</em>
               </h2>
               <p>
-                UTN FRM MCP es un servidor MCP, el estándar abierto con el que los asistentes usan herramientas. Tu
-                asistente lo llama; él consulta el Campus, Autogestión o tu correo por vos.
+                UTN FRM MCP es un servidor MCP, el estándar abierto con el que los asistentes usan herramientas.
               </p>
             </Reveal>
 
@@ -256,10 +250,6 @@ export default function Home() {
               <h2 id="h-control">
                 Tu cuenta, <em>tus reglas.</em>
               </h2>
-              <p>
-                Pensado para que puedas dejarlo conectado con tranquilidad: todo ocurre en tu equipo y nada cambia en el
-                Campus ni en Autogestión sin que lo hagas vos.
-              </p>
             </Reveal>
 
             <Reveal className="principles" threshold={0.15}>
@@ -291,10 +281,6 @@ export default function Home() {
               <h2 id="h-empezar">
                 Listo en <em>cuatro pasos.</em>
               </h2>
-              <p>
-                Instalá el paquete, conectá tu cuenta, enlazalo con tu asistente y empezá a preguntar. Disponible para{" "}
-                {product.platforms}.
-              </p>
             </Reveal>
             <Install />
           </div>
@@ -328,7 +314,6 @@ export default function Home() {
             <h2 id="h-final">
               Que tu facultad <em>trabaje para vos.</em>
             </h2>
-            <p>Conectá tu asistente en minutos y empezá a preguntar.</p>
             <div className="cta-row cta-center">
               <Link href="/#empezar" className="btn btn-sol">
                 Empezar ahora <IconArrow />

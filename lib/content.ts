@@ -18,6 +18,8 @@ export const product = {
   repo,
   /** Página de releases: de ahí se bajan el instalador y su .sha256. */
   release: `${repo}/releases`,
+  // shortcut: #main se mueve con cada push (el tag v2.1.0 quedó antes del fix de Windows): fijar acá el tag nuevo cuando el dueño lo publique.
+  gitSpec: "github:BautistaAlosMartorell/utnfrm-mcp#main",
   pkgName: `utn-mcp-mendoza-${version}.tgz`,
   mcpbName: `utn-mcp-mendoza-${version}.mcpb`,
   issues: `${repo}/issues`,
@@ -116,6 +118,8 @@ export interface OsDef {
   shell: string;
   /** Prerrequisito del sistema, si lo hay. */
   before?: string;
+  /** Instalación con npm directo desde GitHub. */
+  npm: string;
   install: string;
   verify: string;
   note?: string;
@@ -123,12 +127,24 @@ export interface OsDef {
 
 const dir = "utn-mcp-beta";
 
+/** npm 12 bloquea las dependencias git por defecto (EALLOWGIT): el flag las habilita solo para este comando. */
+const npmGit = `npm install --global --allow-git=all ${product.gitSpec}`;
+const browser = `${product.cli} install-browser`;
+const linuxDeps = ["sudo apt-get update", "sudo apt-get install -y libsecret-tools gnome-keyring"];
+
+export const installMethods = [
+  { id: "npm", label: "Con npm" },
+  { id: "tgz", label: "Instalador .tgz" },
+] as const;
+export type MethodId = (typeof installMethods)[number]["id"];
+
 /** Paso 1: descarga manual de la release, tal como figura en el README. */
 export const installByOs: OsDef[] = [
   {
     id: "windows",
     label: "Windows",
     shell: "PowerShell",
+    npm: [npmGit, browser].join("\n"),
     install: [
       `cd "$HOME\\Downloads\\${dir}"`,
       `npm install --global .\\${product.pkgName}`,
@@ -146,10 +162,10 @@ export const installByOs: OsDef[] = [
     shell: "Terminal",
     before:
       "Necesita el almacén seguro de contraseñas (Secret Service) de una sesión de escritorio normal, desbloqueado. No funciona de forma segura por SSH, sin pantalla ni en WSL. El bloque es para Ubuntu o Debian; en otras distribuciones instalá el equivalente.",
+    npm: [...linuxDeps, npmGit, browser].join("\n"),
     install: [
       `cd ~/Downloads/${dir}`,
-      "sudo apt-get update",
-      "sudo apt-get install -y libsecret-tools gnome-keyring",
+      ...linuxDeps,
       `npm install --global ./${product.pkgName}`,
       `${product.cli} install-browser`,
     ].join("\n"),
@@ -160,6 +176,7 @@ export const installByOs: OsDef[] = [
     label: "macOS",
     shell: "Terminal",
     note: "Cuando macOS pregunte, permití que UTN FRM MCP use el Llavero de inicio de sesión.",
+    npm: [npmGit, browser].join("\n"),
     install: [
       `cd ~/Downloads/${dir}`,
       `npm install --global ./${product.pkgName}`,
@@ -230,10 +247,6 @@ export const uninstallCommands = [
 
 export const faqs: { q: string; a: string }[] = [
   {
-    q: "¿Qué es UTN FRM MCP?",
-    a: "Un servidor local que le da a tu asistente de IA herramientas para consultar el Campus Virtual, Autogestión (Sysacad) y el correo institucional de la UTN Facultad Regional Mendoza, con tu propia cuenta. Usa el Model Context Protocol (MCP), un estándar abierto para conectar asistentes con herramientas.",
-  },
-  {
     q: "¿Con qué asistentes funciona?",
     a: "Con Codex, Claude Code, OpenCode y Claude Desktop (mediante un paquete .mcpb, sin terminal). Cada uno tiene su comando de registro o su paquete. No funciona desde un chat web que no admita servidores locales.",
   },
@@ -243,7 +256,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "¿La IA puede entregar mis trabajos o publicar por mí?",
-    a: "No. En el Campus y en Autogestión es solo lectura: entregar, publicar en foros, responder, votar, crear eventos o inscribirse están deshabilitados. Las herramientas de ese tipo, como mucho, muestran una vista previa. Las entregas las hacés vos desde el Campus.",
+    a: "No. En el Campus y en Autogestión es solo lectura: entregar, publicar, votar, crear eventos o inscribirse están deshabilitados, y las herramientas de ese tipo solo muestran una vista previa. Las entregas las hacés vos desde el Campus.",
   },
   {
     q: "¿Qué puede hacer con mi correo?",
@@ -251,7 +264,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "¿Qué pasa con mi contraseña?",
-    a: "El Campus se inicia en su propia página, en una ventana de Chromium: ahí escribís tu contraseña, no en el asistente. Autogestión y el correo necesitan tu usuario y contraseña; solo si los cargás en el asistente de instalación se guardan cifrados en el almacén seguro del sistema (DPAPI, Llavero o Secret Service), nunca en archivos de texto ni en la configuración. Con forget-credentials los borrás.",
+    a: "El Campus se inicia en su propia página, en una ventana de Chromium: ahí escribís tu contraseña, no en el asistente. Autogestión y el correo necesitan tu usuario y contraseña; solo si los cargás en el asistente guiado se guardan cifrados en el almacén seguro del sistema (DPAPI, Llavero o Secret Service), nunca en texto plano. Con forget-credentials los borrás.",
   },
   {
     q: "¿Mi asistente ve lo que consulto?",
@@ -260,9 +273,5 @@ export const faqs: { q: string; a: string }[] = [
   {
     q: "¿Es un producto oficial de la UTN?",
     a: "No. Es un proyecto independiente y no oficial, sin afiliación ni aval de la Universidad Tecnológica Nacional. Solo accede a lo que tu cuenta ya puede ver.",
-  },
-  {
-    q: "¿Qué necesito para empezar?",
-    a: "Windows, Linux o macOS, Node.js 22.13 o posterior, una cuenta del Campus y un cliente de IA con MCP ya instalado. No hace falta clonar el repositorio ni editar código: se instala con un paquete de la release y un asistente guiado (setup-wizard) hace el resto.",
   },
 ];
