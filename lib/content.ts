@@ -247,10 +247,6 @@ export const uninstallCommands = [
 
 export const faqs: { q: string; a: string }[] = [
   {
-    q: "¿Qué es UTN FRM MCP?",
-    a: "Un servidor local que le da a tu asistente de IA herramientas para consultar el Campus Virtual, Autogestión (Sysacad) y el correo institucional de la UTN Facultad Regional Mendoza, con tu propia cuenta. Usa el Model Context Protocol (MCP), un estándar abierto para conectar asistentes con herramientas.",
-  },
-  {
     q: "¿Con qué asistentes funciona?",
     a: "Con Codex, Claude Code, OpenCode y Claude Desktop (mediante un paquete .mcpb, sin terminal). Cada uno tiene su comando de registro o su paquete. No funciona desde un chat web que no admita servidores locales.",
   },
@@ -260,7 +256,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "¿La IA puede entregar mis trabajos o publicar por mí?",
-    a: "No. En el Campus y en Autogestión es solo lectura: entregar, publicar en foros, responder, votar, crear eventos o inscribirse están deshabilitados. Las herramientas de ese tipo, como mucho, muestran una vista previa. Las entregas las hacés vos desde el Campus.",
+    a: "No. En el Campus y en Autogestión es solo lectura: entregar, publicar, votar, crear eventos o inscribirse están deshabilitados, y las herramientas de ese tipo solo muestran una vista previa. Las entregas las hacés vos desde el Campus.",
   },
   {
     q: "¿Qué puede hacer con mi correo?",
@@ -268,7 +264,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "¿Qué pasa con mi contraseña?",
-    a: "El Campus se inicia en su propia página, en una ventana de Chromium: ahí escribís tu contraseña, no en el asistente. Autogestión y el correo necesitan tu usuario y contraseña; solo si los cargás en el asistente de instalación se guardan cifrados en el almacén seguro del sistema (DPAPI, Llavero o Secret Service), nunca en archivos de texto ni en la configuración. Con forget-credentials los borrás.",
+    a: "El Campus se inicia en su propia página, en una ventana de Chromium: ahí escribís tu contraseña, no en el asistente. Autogestión y el correo necesitan tu usuario y contraseña; solo si los cargás en el asistente guiado se guardan cifrados en el almacén seguro del sistema (DPAPI, Llavero o Secret Service), nunca en texto plano. Con forget-credentials los borrás.",
   },
   {
     q: "¿Mi asistente ve lo que consulto?",
@@ -277,9 +273,5 @@ export const faqs: { q: string; a: string }[] = [
   {
     q: "¿Es un producto oficial de la UTN?",
     a: "No. Es un proyecto independiente y no oficial, sin afiliación ni aval de la Universidad Tecnológica Nacional. Solo accede a lo que tu cuenta ya puede ver.",
-  },
-  {
-    q: "¿Qué necesito para empezar?",
-    a: "Windows, Linux o macOS, Node.js 22.13 o posterior, una cuenta del Campus y un cliente de IA con MCP ya instalado. No hace falta clonar el repositorio ni editar código: se instala con un paquete de la release y un asistente guiado (setup-wizard) hace el resto.",
   },
 ];
